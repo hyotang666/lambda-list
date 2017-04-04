@@ -35,25 +35,25 @@
 ,:ignore-signals warning
 
 ; as := (member :function :macro :method)
-#?(vars<=lambda-list '((a symbol))) :signals error
+#?(vars<=lambda-list '((a symbol))) :signals lambda-list-simple-error
 #?(vars<=lambda-list '((a symbol)) :as :method)
 => (a)
 ,:test equal
 #?(vars<=lambda-list '((a symbol)) :as :macro)
 => (a symbol)
 ,:test equal
-#?(vars<=lambda-list '(a . b)) :signals error
-#?(vars<=lambda-list '(a . b) :as :method) :signals error
+#?(vars<=lambda-list '(a . b)) :signals lambda-list-simple-error
+#?(vars<=lambda-list '(a . b) :as :method) :signals lambda-list-simple-error
 #?(vars<=lambda-list '(a . b) :as :macro)
 => (a b)
 ,:test equal
-#?(vars<=lambda-list '(&whole whole a b)) :signals error
-#?(vars<=lambda-list '(&whole whole a b) :as :method) :signals error
+#?(vars<=lambda-list '(&whole whole a b)) :signals lambda-list-simple-error
+#?(vars<=lambda-list '(&whole whole a b) :as :method) :signals lambda-list-simple-error
 #?(vars<=lambda-list '(&whole whole a b) :as :macro)
 => (whole a b)
 ,:test equal
-#?(vars<=lambda-list '(a &environment env)) :signals error
-#?(vars<=lambda-list '(a &environment env) :as :method) :signals error
+#?(vars<=lambda-list '(a &environment env)) :signals lambda-list-simple-error
+#?(vars<=lambda-list '(a &environment env) :as :method) :signals lambda-list-simple-error
 #?(vars<=lambda-list '(a &environment env) :as :macro)
 => (a env)
 ,:test equal

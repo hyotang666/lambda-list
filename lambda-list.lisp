@@ -4,18 +4,35 @@
     #:vars<=lambda-list
     #:canonicalize-lambda-list
     #:lambda-list-keyword-p
+    ;;;; conditions
+    #:lambda-list-error
+    #:lambda-list-type-error
+    #:lambda-list-simple-error
     ))
 (in-package :lambda-list)
 
 (define-simple-type(symbols (:element-type symbol)
 			    (:element-predicate symbolp)))
 
+(eval-when(:compile-toplevel :load-toplevel :execute) ; <--- ccl need.
+  (define-condition lambda-list-error()())
+  (define-condition lambda-list-type-error(lambda-list-error simple-type-error)
+    ())
+  (define-condition lambda-list-simple-error(lambda-list-error simple-error)
+    ())
+)
+
 (prototype vars<=lambda-list(list &key(:as(member :function :method :macro)))
 	   symbols)
 (defun vars<=lambda-list(lambda-list &key(as :function))
-  (check-type lambda-list list)
+  #-sbcl ; to muffle compiler note. Already type is checked by proclaimation.
+  (checktype lambda-list list lambda-list-type-error
+	     "~S is not ~S" lambda-list 'list)
   (labels((REC(list &optional acc context)
-	    (if(endp list)
+	    (if(handler-case(endp list)
+		 (error()(error 'lambda-list-simple-error
+				:format-control "Dotted list is invalid as ~S:~%~S"
+				:format-arguments (list as lambda-list))))
 	      (nreverse acc)
 	      (MAIN-DIVERGE (car list)(cdr list) acc context)))
 	  (MAIN-DIVERGE(target rest acc context)
@@ -31,7 +48,9 @@
 	      key
 	      (if(eq :macro as)
 		key
-		(error "Invalid lambda-list as ~S : ~S"as lambda-list))))
+		(error 'lambda-list-simple-error
+		       :format-control "Invalid lambda-list as ~S : ~S"
+		       :format-arguments (list as lambda-list)))))
 	  (LIST-ON-TOP(context sublis rest acc)
 	    (if(null context) ; its nested lambda-list, or method, so...
 	      (SUBLIS-WITHOUT-CONTEXT sublis rest acc)
@@ -39,7 +58,9 @@
 	  (SUBLIS-WITHOUT-CONTEXT(sublis rest acc)
 	    (ecase as
 	      (:function ; it's invalid form.
-		(error "Invalid form~S~%Especially in ~S" lambda-list sublis))
+		(error 'lambda-list-simple-error
+		       :format-control "Invalid form~S~%Especially in ~S"
+		       :format-arguments (list lambda-list sublis)))
 	      (:method ; it's method class specifier.
 		(REC rest(cons(car sublis)acc)))
 	      (:macro ; it's nested lambda-list.
@@ -50,7 +71,9 @@
 	      (&optional(&OPTIONAL sublis rest acc context))
 	      (&aux(&AUX sublis rest acc context))
 	      ((&rest &allow-other-keys &body &whole &environment)
-	       (error"Invalid form ~S~%Especially in ~S"lambda-list sublis))))
+	       (error 'lambda-list-simple-error
+		      :format-control "Invalid form ~S~%Especially in ~S"
+		      :format-arguments (list lambda-list sublis)))))
 	  (&KEY(sublis rest acc context)
 	    (let((var(first sublis)))
 	      (if(listp var) ; it has alias.
