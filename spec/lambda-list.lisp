@@ -1,6 +1,6 @@
 (defpackage :lambda-list.spec (:use :cl :jingoh :lambda-list))
 (in-package :lambda-list.spec)
-(setup :lambda-list.spec)
+(setup :lambda-list)
 
 (requirements-about VARS<=LAMBDA-LIST)
 
