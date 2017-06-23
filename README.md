@@ -1,30 +1,23 @@
-# LAMBDA-LIST - short description
+# LAMBDA-LIST 0.0.0
+## What is this?
+Tiny lambda var collector.
+### Current lisp world
+There is lambda-fiddle.
+### Issues
+Unfortunately, what I want is not exist in it.
+### Proposal
 
-* Long description
-
+## Usage
+See spec file.
 ## From developer
 
-* Product's goal
-* License
-* Supported implementation
+### Product's goal
 
-## For light user
+### License
+MIT
+### Developed with
+CLISP
+### Tested with
+SBCL, ECL, CCL
+## Installation
 
-* Tutorial - main API
-* FAQ
-
-## For heavy user
-
-* Dictionary
-
-## For resolver
-
-* Specification of API which integrates implementation dependent behaviors
-
-## For improver
-
-* Specification of DSL
-
-## For maintainer
-
-* Structure of the system model
