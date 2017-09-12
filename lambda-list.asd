@@ -6,7 +6,7 @@
   :long-description #.(read-file-string(subpathname *load-pathname*
                                                     "README.md"))
   :license "MIT"
-  :depends-on (:type-ext :millet)
+  :depends-on (:type-ext :millet "closer-mop")
   :components ((:file "lambda-list")))
 ;; Perform method below is added by JINGOH.GENERATOR.
 (defmethod perform ((o test-op) (c (eql (find-system "lambda-list"))))
