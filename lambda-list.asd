@@ -8,6 +8,6 @@
   :license "MIT"
   :depends-on (:type-ext :millet "closer-mop")
   :components ((:file "lambda-list")))
-;; Perform method below is added by JINGOH.GENERATOR.
-(defmethod perform ((o test-op) (c (eql (find-system "lambda-list"))))
- (test-system :lambda-list.test))
+
+(defmethod component-depends-on ((o test-op) (c (eql (find-system "lambda-list"))))
+  (append (call-next-method)'((test-op "lambda-list.test"))))
