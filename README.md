@@ -1,11 +1,6 @@
 # LAMBDA-LIST 0.0.0
-## What is this?
-Tiny lambda var collector.
-### Current lisp world
-There is lambda-fiddle.
-### Issues
-Unfortunately, what I want is not exist in it.
-### Proposal
+
+[lambda-fiddle](https://github.com/Shinmera/lambda-fiddle) is recommended.
 
 ## Usage
 See spec file.
